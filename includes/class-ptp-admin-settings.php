@@ -9,6 +9,7 @@ class PTP_Admin_Settings {
 
     public function __construct() {
         add_action( 'admin_init', [ $this, 'register_settings' ] );
+        add_action( 'wp_ajax_ptp_delete_all_data', [ $this, 'ajax_delete_all_data' ] );
     }
 
     /**
@@ -22,6 +23,7 @@ class PTP_Admin_Settings {
         register_setting( 'ptp_settings', 'ptp_status_labels' );
         register_setting( 'ptp_settings', 'ptp_auto_generate' );
         register_setting( 'ptp_settings', 'ptp_tracking_prefix' );
+        register_setting( 'ptp_settings', 'ptp_keep_data' );
     }
 
     /**
@@ -50,6 +52,10 @@ class PTP_Admin_Settings {
             } else {
                 add_settings_error( 'ptp_settings', 'invalid_prefix', __( 'Préfixe invalide. Utilisez 2-10 caractères alphanumériques.', 'plugin-tracking-personalise' ), 'error' );
             }
+
+            // Keep data option
+            $keep_data = isset( $_POST['ptp_keep_data'] ) ? 1 : 0;
+            update_option( 'ptp_keep_data', $keep_data );
 
             echo '<div class="notice notice-success"><p>' . esc_html__( 'Réglages enregistrés', 'plugin-tracking-personalise' ) . '</p></div>';
         }
@@ -183,9 +189,128 @@ class PTP_Admin_Settings {
                     </tr>
                 </table>
 
+                <h2><?php esc_html_e( 'Données et désinstallation', 'plugin-tracking-personalise' ); ?></h2>
+                <table class="form-table">
+                    <tr>
+                        <th><?php esc_html_e( 'Conservation des données', 'plugin-tracking-personalise' ); ?></th>
+                        <td>
+                            <label>
+                                <input type="checkbox" name="ptp_keep_data" value="1" <?php checked( get_option( 'ptp_keep_data', 1 ), 1 ); ?>>
+                                <?php esc_html_e( 'Conserver les envois et événements lors de la désinstallation du plugin', 'plugin-tracking-personalise' ); ?>
+                            </label>
+                            <p class="description">
+                                <?php esc_html_e( 'Recommandé : laissez cette option activée pour ne pas perdre vos données lors d\'une mise à jour ou réinstallation.', 'plugin-tracking-personalise' ); ?>
+                            </p>
+                            <p class="description" style="color:#d63638;">
+                                ⚠️ <?php esc_html_e( 'Si vous décochez cette option, TOUTES les données seront supprimées définitivement lors de la désinstallation du plugin.', 'plugin-tracking-personalise' ); ?>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+
+                <h2 style="color:#d63638;"><?php esc_html_e( '🗑️ Zone dangereuse', 'plugin-tracking-personalise' ); ?></h2>
+                <table class="form-table">
+                    <tr>
+                        <th><?php esc_html_e( 'Supprimer toutes les données', 'plugin-tracking-personalise' ); ?></th>
+                        <td>
+                            <p class="description">
+                                <?php esc_html_e( 'Supprime TOUTES les données du plugin : envois, événements, réglages.', 'plugin-tracking-personalise' ); ?>
+                            </p>
+                            <button type="button" id="ptp-delete-all-data" class="button" style="background:#d63638;color:#fff;border-color:#d63638;">
+                                🗑️ <?php esc_html_e( 'Supprimer toutes les données', 'plugin-tracking-personalise' ); ?>
+                            </button>
+                            <p class="description" style="color:#d63638;font-weight:600;margin-top:8px;">
+                                ⚠️ <?php esc_html_e( 'Cette action est IRRÉVERSIBLE ! Un backup sera créé dans /wp-content/uploads/ptp-backups/', 'plugin-tracking-personalise' ); ?>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+
                 <?php submit_button( __( 'Enregistrer les réglages', 'plugin-tracking-personalise' ), 'primary', 'ptp_settings_submit' ); ?>
             </form>
         </div>
         <?php
+    }
+
+    /**
+     * AJAX: Delete all plugin data.
+     */
+    public function ajax_delete_all_data(): void {
+        check_ajax_referer( 'ptp_admin_nonce', 'nonce' );
+        
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( [ 'message' => __( 'Accès refusé', 'plugin-tracking-personalise' ) ] );
+        }
+        
+        // Confirm with password or special token
+        $confirm = sanitize_text_field( $_POST['confirm'] ?? '' );
+        if ( $confirm !== 'DELETE' ) {
+            wp_send_json_error( [ 'message' => __( 'Confirmation requise', 'plugin-tracking-personalise' ) ] );
+        }
+        
+        global $wpdb;
+        
+        // Create backup first
+        $backup_dir = WP_CONTENT_DIR . '/uploads/ptp-backups/';
+        if ( ! file_exists( $backup_dir ) ) {
+            wp_mkdir_p( $backup_dir );
+        }
+        
+        $backup_file = $backup_dir . 'backup-' . date( 'Y-m-d-H-i-s' ) . '.json';
+        
+        // Export data
+        $shipments = get_posts( [
+            'post_type'      => 'ptp_shipment',
+            'posts_per_page' => -1,
+            'post_status'    => 'any',
+        ] );
+        
+        $backup_data = [
+            'version'   => PTP_VERSION,
+            'date'      => current_time( 'mysql' ),
+            'shipments' => [],
+        ];
+        
+        foreach ( $shipments as $ship ) {
+            $backup_data['shipments'][] = [
+                'tracking'  => get_post_meta( $ship->ID, '_ptp_tracking_number', true ),
+                'carrier'   => get_post_meta( $ship->ID, '_ptp_carrier', true ),
+                'status'    => get_post_meta( $ship->ID, '_ptp_status_global', true ),
+                'events'    => PTP_Database::get_events( $ship->ID, 'ASC' ),
+                'meta'      => get_post_meta( $ship->ID ),
+            ];
+        }
+        
+        file_put_contents( $backup_file, json_encode( $backup_data, JSON_PRETTY_PRINT ) );
+        
+        // Delete table
+        $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}ptp_tracking_events" );
+        
+        // Delete posts
+        foreach ( $shipments as $ship ) {
+            wp_delete_post( $ship->ID, true );
+        }
+        
+        // Delete options (except keep_data)
+        $options = [
+            'ptp_version',
+            'ptp_db_version',
+            'ptp_require_email',
+            'ptp_carriers',
+            'ptp_status_labels',
+            'ptp_auto_generate',
+            'ptp_tracking_prefix',
+        ];
+        foreach ( $options as $option ) {
+            delete_option( $option );
+        }
+        
+        // Delete counter options
+        $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE 'ptp_tracking_counter_%'" );
+        
+        wp_send_json_success( [
+            'message'     => __( 'Toutes les données ont été supprimées', 'plugin-tracking-personalise' ),
+            'backup_file' => str_replace( WP_CONTENT_DIR, '', $backup_file ),
+        ] );
     }
 }

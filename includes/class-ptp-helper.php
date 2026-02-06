@@ -146,4 +146,35 @@ class PTP_Helper {
     public static function current_user_can_manage(): bool {
         return current_user_can( 'edit_posts' );
     }
+
+    /**
+     * Get default carriers for initial setup.
+     *
+     * @return array
+     */
+    public static function default_carriers(): array {
+        return [
+            'ups'     => 'UPS',
+            'fedex'   => 'FedEx',
+            'usps'    => 'USPS',
+            'dhl'     => 'DHL',
+            'other'   => __( 'Autre', 'plugin-tracking-personalise' ),
+        ];
+    }
+
+    /**
+     * Get default statuses for initial setup.
+     *
+     * @return array
+     */
+    public static function default_statuses(): array {
+        return [
+            'pending'          => __( 'En attente', 'plugin-tracking-personalise' ),
+            'in_transit'       => __( 'En transit', 'plugin-tracking-personalise' ),
+            'out_for_delivery' => __( 'En livraison', 'plugin-tracking-personalise' ),
+            'delivered'        => __( 'Livré', 'plugin-tracking-personalise' ),
+            'exception'        => __( 'Exception', 'plugin-tracking-personalise' ),
+            'returned'         => __( 'Retourné', 'plugin-tracking-personalise' ),
+        ];
+    }
 }

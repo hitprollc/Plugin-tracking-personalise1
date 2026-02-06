@@ -158,3 +158,47 @@
     });
 
 })(jQuery);
+
+// Delete all data button
+jQuery(document).on('click', '#ptp-delete-all-data', function (e) {
+    e.preventDefault();
+    
+    const confirmText = prompt(
+        'ATTENTION : Cette action supprimera TOUTES les données.\n\n' +
+        'Un backup sera créé dans /wp-content/uploads/ptp-backups/\n\n' +
+        'Pour confirmer, tapez exactement : DELETE'
+    );
+    
+    if (confirmText !== 'DELETE') {
+        alert('Suppression annulée');
+        return;
+    }
+    
+    const $btn = jQuery(this);
+    const originalText = $btn.html();
+    
+    $btn.prop('disabled', true).html('⏳ Suppression en cours...');
+    
+    jQuery.ajax({
+        url: ptpAdmin.ajaxUrl,
+        type: 'POST',
+        data: {
+            action: 'ptp_delete_all_data',
+            confirm: 'DELETE',
+            nonce: ptpAdmin.nonce
+        },
+        success: function (response) {
+            if (response.success) {
+                alert('✅ ' + response.data.message + '\n\nBackup: ' + response.data.backup_file);
+                location.reload();
+            } else {
+                alert('❌ ' + response.data.message);
+                $btn.html(originalText).prop('disabled', false);
+            }
+        },
+        error: function () {
+            alert('❌ Erreur de connexion');
+            $btn.html(originalText).prop('disabled', false);
+        }
+    });
+});
