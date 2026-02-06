@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Plugin Tracking Personalise
- * Plugin URI:  https://example.com/plugin-tracking-personalise
+ * Plugin URI:  https://hitprollc.com/plugin-tracking-personalise
  * Description: Système de suivi d'expédition (tracking colis) personnalisé, similaire à UPS/USPS. Compatible WooCommerce.
- * Version:     1.0.0
- * Author:      HitPro LLC
- * Author URI:  https://example.com
+ * Version:     1.0.1
+ * Author:      Hitpro LLC
+ * Author URI:  https://hitprollc.com
  * License:     GPL-2.0+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: plugin-tracking-personalise
@@ -14,11 +14,12 @@
  * Requires PHP: 8.1
  * WC requires at least: 7.0
  * WC tested up to: 9.0
+ * Update URI:  https://github.com/hitprollc/Plugin-tracking-personalise1
  */
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'PTP_VERSION', '1.0.0' );
+define( 'PTP_VERSION', '1.0.1' );
 define( 'PTP_PLUGIN_FILE', __FILE__ );
 define( 'PTP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'PTP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -34,6 +35,7 @@ $ptp_includes = [
     'includes/class-ptp-deactivator.php',
     'includes/class-ptp-post-types.php',
     'includes/class-ptp-admin.php',
+    'includes/class-ptp-admin-notices.php',
     'includes/class-ptp-admin-shipment.php',
     'includes/class-ptp-admin-settings.php',
     'includes/class-ptp-shortcodes.php',
@@ -85,6 +87,7 @@ final class Plugin_Tracking_Personalise {
         // Admin
         if ( is_admin() ) {
             new PTP_Admin();
+            new PTP_Admin_Notices();
             new PTP_Admin_Shipment();
             new PTP_Admin_Settings();
         }
