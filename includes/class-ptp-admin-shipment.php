@@ -15,6 +15,7 @@ class PTP_Admin_Shipment {
         add_action( 'manage_ptp_shipment_posts_custom_column', [ $this, 'render_column' ], 10, 2 );
         add_action( 'wp_ajax_ptp_add_event', [ $this, 'ajax_add_event' ] );
         add_action( 'wp_ajax_ptp_delete_event', [ $this, 'ajax_delete_event' ] );
+        add_action( 'wp_ajax_ptp_generate_tracking', [ $this, 'ajax_generate_tracking' ] );
     }
 
     /**
@@ -60,7 +61,17 @@ class PTP_Admin_Shipment {
             <tr>
                 <th><label for="ptp_tracking_number"><?php esc_html_e( 'Numéro de suivi', 'plugin-tracking-personalise' ); ?> *</label></th>
                 <td>
-                    <input type="text" id="ptp_tracking_number" name="ptp_tracking_number" value="<?php echo esc_attr( $tracking_number ); ?>" class="regular-text" required>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <input type="text" id="ptp_tracking_number" name="ptp_tracking_number" value="<?php echo esc_attr( $tracking_number ); ?>" class="regular-text" required>
+                        <?php if ( get_option( 'ptp_auto_generate', 1 ) ): ?>
+                            <button type="button" id="ptp-generate-tracking" class="button button-secondary">
+                                🔄 <?php esc_html_e( 'Générer', 'plugin-tracking-personalise' ); ?>
+                            </button>
+                        <?php endif; ?>
+                    </div>
+                    <p class="description">
+                        <?php esc_html_e( 'Numéro unique de suivi du colis', 'plugin-tracking-personalise' ); ?>
+                    </p>
                 </td>
             </tr>
             <tr>
@@ -347,5 +358,27 @@ class PTP_Admin_Shipment {
         } else {
             wp_send_json_error( __( 'Erreur lors de la suppression', 'plugin-tracking-personalise' ) );
         }
+    }
+
+    /**
+     * AJAX handler to generate tracking number.
+     */
+    public function ajax_generate_tracking(): void {
+        check_ajax_referer( 'ptp_admin_nonce', 'nonce' );
+        
+        if ( ! PTP_Helper::current_user_can_manage() ) {
+            wp_send_json_error( [ 'message' => __( 'Accès refusé', 'plugin-tracking-personalise' ) ] );
+        }
+        
+        if ( ! get_option( 'ptp_auto_generate', 1 ) ) {
+            wp_send_json_error( [ 'message' => __( 'Génération désactivée', 'plugin-tracking-personalise' ) ] );
+        }
+        
+        $tracking = PTP_Tracking_Generator::generate();
+        
+        wp_send_json_success( [
+            'tracking' => $tracking,
+            'message'  => __( 'Numéro généré avec succès', 'plugin-tracking-personalise' ),
+        ] );
     }
 }

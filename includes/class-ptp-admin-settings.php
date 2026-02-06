@@ -20,6 +20,8 @@ class PTP_Admin_Settings {
         register_setting( 'ptp_settings', 'ptp_require_email' );
         register_setting( 'ptp_settings', 'ptp_carriers' );
         register_setting( 'ptp_settings', 'ptp_status_labels' );
+        register_setting( 'ptp_settings', 'ptp_auto_generate' );
+        register_setting( 'ptp_settings', 'ptp_tracking_prefix' );
     }
 
     /**
@@ -37,6 +39,17 @@ class PTP_Admin_Settings {
             update_option( 'ptp_page_suivi', absint( $_POST['ptp_page_suivi'] ?? 0 ) );
             update_option( 'ptp_page_suivi_detail', absint( $_POST['ptp_page_suivi_detail'] ?? 0 ) );
             update_option( 'ptp_require_email', isset( $_POST['ptp_require_email'] ) ? '1' : '0' );
+
+            // Auto generate settings
+            $auto_generate = isset( $_POST['ptp_auto_generate'] ) ? 1 : 0;
+            update_option( 'ptp_auto_generate', $auto_generate );
+
+            $tracking_prefix = strtoupper( sanitize_text_field( $_POST['ptp_tracking_prefix'] ?? 'TRACK' ) );
+            if ( PTP_Tracking_Generator::validate_prefix( $tracking_prefix ) ) {
+                update_option( 'ptp_tracking_prefix', $tracking_prefix );
+            } else {
+                add_settings_error( 'ptp_settings', 'invalid_prefix', __( 'Préfixe invalide. Utilisez 2-10 caractères alphanumériques.', 'plugin-tracking-personalise' ), 'error' );
+            }
 
             echo '<div class="notice notice-success"><p>' . esc_html__( 'Réglages enregistrés', 'plugin-tracking-personalise' ) . '</p></div>';
         }
@@ -101,6 +114,41 @@ class PTP_Admin_Settings {
                                 <input type="checkbox" id="ptp_require_email" name="ptp_require_email" value="1" <?php checked( $require_email, '1' ); ?>>
                                 <?php esc_html_e( 'Exiger l\'email du client pour afficher le suivi', 'plugin-tracking-personalise' ); ?>
                             </label>
+                        </td>
+                    </tr>
+                </table>
+
+                <h2><?php esc_html_e( 'Génération automatique de tracking', 'plugin-tracking-personalise' ); ?></h2>
+                <table class="form-table">
+                    <tr>
+                        <th>
+                            <label for="ptp_auto_generate"><?php esc_html_e( 'Activer la génération automatique', 'plugin-tracking-personalise' ); ?></label>
+                        </th>
+                        <td>
+                            <label>
+                                <input type="checkbox" id="ptp_auto_generate" name="ptp_auto_generate" value="1" <?php checked( get_option( 'ptp_auto_generate', 1 ), 1 ); ?>>
+                                <?php esc_html_e( 'Permettre la génération de numéros de tracking', 'plugin-tracking-personalise' ); ?>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label for="ptp_tracking_prefix"><?php esc_html_e( 'Préfixe de tracking', 'plugin-tracking-personalise' ); ?></label>
+                        </th>
+                        <td>
+                            <input type="text" id="ptp_tracking_prefix" name="ptp_tracking_prefix" 
+                                   value="<?php echo esc_attr( get_option( 'ptp_tracking_prefix', 'TRACK' ) ); ?>" 
+                                   class="regular-text" 
+                                   maxlength="10" 
+                                   pattern="[A-Z0-9]{2,10}"
+                                   style="text-transform:uppercase;">
+                            <p class="description">
+                                <?php esc_html_e( '2-10 caractères alphanumériques majuscules. Exemple : SHIP, TRACK, ORDER', 'plugin-tracking-personalise' ); ?>
+                            </p>
+                            <p class="description">
+                                <strong><?php esc_html_e( 'Aperçu :', 'plugin-tracking-personalise' ); ?></strong>
+                                <code id="ptp-tracking-preview"><?php echo esc_html( PTP_Tracking_Generator::get_preview() ); ?></code>
+                            </p>
                         </td>
                     </tr>
                 </table>

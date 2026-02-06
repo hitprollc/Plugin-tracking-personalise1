@@ -27,6 +27,7 @@ define( 'PTP_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 // Autoload includes
 $ptp_includes = [
     'includes/class-ptp-compatibility.php', // Must be first to declare WooCommerce compatibility early
+    'includes/class-ptp-tracking-generator.php',
     'includes/class-ptp-helper.php',
     'includes/class-ptp-database.php',
     'includes/class-ptp-activator.php',
