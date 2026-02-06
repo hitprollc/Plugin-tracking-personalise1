@@ -1,0 +1,131 @@
+/* Admin Styles for Plugin Tracking Personalise */
+
+/* Metabox Styles */
+.ptp-add-event-form {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.ptp-add-event-form h3 {
+    margin-top: 0;
+}
+
+#ptp-events-list tr.ptp-no-events td {
+    text-align: center;
+    font-style: italic;
+    color: #666;
+}
+
+.ptp-delete-event {
+    color: #a00;
+}
+
+.ptp-delete-event:hover {
+    color: #dc3232;
+}
+
+/* Status Colors */
+.ptp-status-pending {
+    color: #f0ad4e;
+}
+
+.ptp-status-in-transit {
+    color: #5bc0de;
+}
+
+.ptp-status-out-for-delivery {
+    color: #337ab7;
+}
+
+.ptp-status-delivered {
+    color: #5cb85c;
+}
+
+.ptp-status-exception {
+    color: #d9534f;
+}
+
+.ptp-status-returned {
+    color: #777;
+}
+
+/* Order Tracking Metabox */
+.ptp-order-tracking-meta p {
+    margin: 10px 0;
+}
+
+.ptp-order-tracking-meta label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+/* Shipment List Table */
+.widefat .ptp-status-pending,
+.widefat .ptp-status-in-transit,
+.widefat .ptp-status-out-for-delivery,
+.widefat .ptp-status-delivered,
+.widefat .ptp-status-exception,
+.widefat .ptp-status-returned {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.widefat .ptp-status-pending {
+    background: #fcf8e3;
+    color: #8a6d3b;
+}
+
+.widefat .ptp-status-in-transit {
+    background: #d9edf7;
+    color: #31708f;
+}
+
+.widefat .ptp-status-out-for-delivery {
+    background: #d9edf7;
+    color: #245269;
+}
+
+.widefat .ptp-status-delivered {
+    background: #dff0d8;
+    color: #3c763d;
+}
+
+.widefat .ptp-status-exception {
+    background: #f2dede;
+    color: #a94442;
+}
+
+.widefat .ptp-status-returned {
+    background: #f5f5f5;
+    color: #555;
+}
+
+/* Form Fields */
+.ptp-form-field {
+    margin-bottom: 15px;
+}
+
+.ptp-form-field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+/* Responsive */
+@media screen and (max-width: 782px) {
+    #ptp-events-list {
+        font-size: 13px;
+    }
+    
+    .ptp-add-event-form .form-table th,
+    .ptp-add-event-form .form-table td {
+        display: block;
+        width: 100%;
+    }
+}

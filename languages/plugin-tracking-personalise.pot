@@ -1,0 +1,291 @@
+# Copyright (C) 2024 HitPro LLC
+# This file is distributed under the same license as the Plugin Tracking Personalise plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Plugin Tracking Personalise 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/plugin-tracking-personalise\n"
+"POT-Creation-Date: 2024-01-01 00:00:00+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2024-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: includes/class-ptp-helper.php
+msgid "En attente"
+msgstr ""
+
+msgid "En transit"
+msgstr ""
+
+msgid "En livraison"
+msgstr ""
+
+msgid "Livré"
+msgstr ""
+
+msgid "Exception"
+msgstr ""
+
+msgid "Retourné"
+msgstr ""
+
+msgid "Autre"
+msgstr ""
+
+#: includes/class-ptp-activator.php
+msgid "Suivi de colis"
+msgstr ""
+
+msgid "Résultat du suivi"
+msgstr ""
+
+#: includes/class-ptp-post-types.php
+msgid "Envois"
+msgstr ""
+
+msgid "Envoi"
+msgstr ""
+
+msgid "Tracking"
+msgstr ""
+
+msgid "Ajouter un envoi"
+msgstr ""
+
+msgid "Nouvel envoi"
+msgstr ""
+
+msgid "Modifier l'envoi"
+msgstr ""
+
+msgid "Voir l'envoi"
+msgstr ""
+
+msgid "Rechercher des envois"
+msgstr ""
+
+msgid "Aucun envoi trouvé"
+msgstr ""
+
+msgid "Aucun envoi dans la corbeille"
+msgstr ""
+
+msgid "Tous les envois"
+msgstr ""
+
+#: includes/class-ptp-admin.php
+msgid "Réglages"
+msgstr ""
+
+#: includes/class-ptp-admin-shipment.php
+msgid "Détails de l'envoi"
+msgstr ""
+
+msgid "Événements de suivi"
+msgstr ""
+
+msgid "Numéro de suivi"
+msgstr ""
+
+msgid "Transporteur"
+msgstr ""
+
+msgid "Sélectionner..."
+msgstr ""
+
+msgid "Statut actuel"
+msgstr ""
+
+msgid "Nom du client"
+msgstr ""
+
+msgid "Email du client"
+msgstr ""
+
+msgid "ID de commande WooCommerce"
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "Statut"
+msgstr ""
+
+msgid "Localisation"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Supprimer"
+msgstr ""
+
+msgid "Aucun événement"
+msgstr ""
+
+msgid "Ajouter un événement"
+msgstr ""
+
+msgid "Date/Heure"
+msgstr ""
+
+msgid "Ajouter l'événement"
+msgstr ""
+
+msgid "Permission refusée"
+msgstr ""
+
+msgid "Données invalides"
+msgstr ""
+
+msgid "Événement ajouté"
+msgstr ""
+
+msgid "Erreur lors de l'ajout"
+msgstr ""
+
+msgid "ID invalide"
+msgstr ""
+
+msgid "Événement supprimé"
+msgstr ""
+
+msgid "Erreur lors de la suppression"
+msgstr ""
+
+msgid "Titre"
+msgstr ""
+
+msgid "Client"
+msgstr ""
+
+#: includes/class-ptp-admin-settings.php
+msgid "Réglages enregistrés"
+msgstr ""
+
+msgid "Réglages du Tracking"
+msgstr ""
+
+msgid "Page de recherche de suivi"
+msgstr ""
+
+msgid "Sélectionner une page..."
+msgstr ""
+
+msgid "Page contenant le shortcode [ptp_tracking_lookup]"
+msgstr ""
+
+msgid "Page de résultat de suivi"
+msgstr ""
+
+msgid "Page contenant le shortcode [ptp_tracking_result]"
+msgstr ""
+
+msgid "Vérification par email"
+msgstr ""
+
+msgid "Exiger l'email du client pour afficher le suivi"
+msgstr ""
+
+msgid "Transporteurs personnalisés"
+msgstr ""
+
+msgid "Les transporteurs par défaut (UPS, FedEx, USPS, DHL) sont toujours disponibles."
+msgstr ""
+
+msgid "Transporteurs supplémentaires"
+msgstr ""
+
+msgid "Fonctionnalité à venir"
+msgstr ""
+
+msgid "Statuts personnalisés"
+msgstr ""
+
+msgid "Les statuts par défaut sont toujours disponibles."
+msgstr ""
+
+msgid "Statuts supplémentaires"
+msgstr ""
+
+msgid "Enregistrer les réglages"
+msgstr ""
+
+#: includes/class-ptp-shortcodes.php
+msgid "Ex: 1Z999AA10123456784"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "votre@email.com"
+msgstr ""
+
+msgid "Suivre mon colis"
+msgstr ""
+
+msgid "Veuillez fournir un numéro de suivi."
+msgstr ""
+
+msgid "Aucun envoi trouvé avec ce numéro de suivi."
+msgstr ""
+
+msgid "Email invalide ou incorrect."
+msgstr ""
+
+msgid "Informations de suivi"
+msgstr ""
+
+msgid "Numéro de suivi:"
+msgstr ""
+
+msgid "Transporteur:"
+msgstr ""
+
+msgid "Destinataire:"
+msgstr ""
+
+msgid "Historique de suivi"
+msgstr ""
+
+#: includes/class-ptp-woocommerce.php
+msgid "Suivi d'expédition"
+msgstr ""
+
+msgid "Envoi lié:"
+msgstr ""
+
+msgid "Envoi supprimé"
+msgstr ""
+
+msgid "Enregistrez pour créer automatiquement un envoi de suivi."
+msgstr ""
+
+msgid "Envoi pour commande #%d"
+msgstr ""
+
+msgid "Envoi créé depuis la commande WooCommerce"
+msgstr ""
+
+msgid "Suivi complet:"
+msgstr ""
+
+msgid "INFORMATIONS DE SUIVI"
+msgstr ""
+
+msgid "Suivre votre colis:"
+msgstr ""
+
+msgid "Commande introuvable"
+msgstr ""
+
+msgid "Envoi créé avec succès"
+msgstr ""
+
+msgid "Erreur lors de la création"
+msgstr ""
