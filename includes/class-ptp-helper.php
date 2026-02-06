@@ -137,4 +137,13 @@ class PTP_Helper {
 
         return $class_map[ $status ] ?? 'ptp-status-default';
     }
+
+    /**
+     * Check if current user can manage plugin.
+     *
+     * @return bool
+     */
+    public static function current_user_can_manage(): bool {
+        return current_user_can( 'edit_posts' );
+    }
 }

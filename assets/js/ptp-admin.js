@@ -101,6 +101,60 @@
             now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
             $('#ptp_event_date').val(now.toISOString().slice(0, 16));
         }
+
+        // Generate tracking number
+        $(document).on('click', '#ptp-generate-tracking', function (e) {
+            e.preventDefault();
+            
+            const $btn = $(this);
+            const $input = $('#ptp_tracking_number');
+            const originalText = $btn.html();
+            
+            // Confirm if field not empty
+            if ($input.val().trim() && !confirm('Remplacer le numéro actuel ?')) {
+                return;
+            }
+            
+            $btn.prop('disabled', true).html('⏳ Génération...');
+            
+            $.ajax({
+                url: ptpAdmin.ajaxUrl,
+                type: 'POST',
+                data: {
+                    action: 'ptp_generate_tracking',
+                    nonce: ptpAdmin.nonce
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $input.val(response.data.tracking).focus();
+                        $btn.html('✅ Généré !');
+                        setTimeout(function () {
+                            $btn.html(originalText);
+                        }, 2000);
+                    } else {
+                        alert(response.data.message || 'Erreur');
+                        $btn.html(originalText);
+                    }
+                },
+                error: function () {
+                    alert('Erreur de connexion');
+                    $btn.html(originalText);
+                },
+                complete: function () {
+                    $btn.prop('disabled', false);
+                }
+            });
+        });
+
+        // Preview tracking format in settings
+        $(document).on('input', '#ptp_tracking_prefix', function () {
+            const prefix = $(this).val().toUpperCase();
+            $(this).val(prefix);
+            
+            const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+            const preview = prefix + '-' + date + '-00001';
+            $('#ptp-tracking-preview').text(preview);
+        });
     });
 
 })(jQuery);

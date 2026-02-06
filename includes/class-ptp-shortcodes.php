@@ -16,6 +16,10 @@ class PTP_Shortcodes {
 
         // Enqueue public assets
         add_action( 'wp_enqueue_scripts', [ __CLASS__, 'enqueue_scripts' ] );
+
+        // AJAX handlers for event checking
+        add_action( 'wp_ajax_ptp_check_events', [ __CLASS__, 'ajax_check_events' ] );
+        add_action( 'wp_ajax_nopriv_ptp_check_events', [ __CLASS__, 'ajax_check_events' ] );
     }
 
     /**
@@ -182,8 +186,74 @@ class PTP_Shortcodes {
                     </div>
                 </div>
             <?php endif; ?>
+
+            <!-- Auto-refresh events -->
+            <script>
+            (function() {
+                const shipmentId = <?php echo absint( $shipment->ID ); ?>;
+                const lastEventTime = '<?php echo esc_js( ! empty( $events ) ? $events[0]['created_at'] : '' ); ?>';
+                
+                // Check for new events every 30 seconds
+                setInterval(function() {
+                    checkNewEvents(shipmentId, lastEventTime);
+                }, 30000);
+            })();
+
+            function checkNewEvents(shipmentId, lastTime) {
+                fetch('<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'action=ptp_check_events&shipment_id=' + shipmentId + '&last_time=' + lastTime
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success && data.data.has_new) {
+                        // Show notification
+                        showNewEventNotification();
+                        // Reload page after 2 seconds
+                        setTimeout(function() {
+                            location.reload();
+                        }, 2000);
+                    }
+                });
+            }
+
+            function showNewEventNotification() {
+                const notification = document.createElement('div');
+                notification.className = 'ptp-notification';
+                notification.innerHTML = '🔔 <?php esc_html_e( 'Nouveaux événements disponibles...', 'plugin-tracking-personalise' ); ?>';
+                notification.style.cssText = 'position:fixed;top:20px;right:20px;background:#28a745;color:#fff;padding:15px 25px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:9999;animation:slideIn 0.3s ease;';
+                document.body.appendChild(notification);
+            }
+            </script>
         </div>
         <?php
         return ob_get_clean();
+    }
+
+    /**
+     * AJAX: Check for new events.
+     */
+    public static function ajax_check_events(): void {
+        $shipment_id = absint( $_POST['shipment_id'] ?? 0 );
+        $last_time   = sanitize_text_field( $_POST['last_time'] ?? '' );
+        
+        if ( ! $shipment_id ) {
+            wp_send_json_error();
+        }
+        
+        global $wpdb;
+        $table = $wpdb->prefix . 'ptp_tracking_events';
+        
+        $count = $wpdb->get_var( $wpdb->prepare(
+            "SELECT COUNT(*) FROM {$table} WHERE shipment_id = %d AND created_at > %s",
+            $shipment_id,
+            $last_time
+        ) );
+        
+        wp_send_json_success( [
+            'has_new' => ( $count > 0 ),
+            'count'   => (int) $count,
+        ] );
     }
 }
