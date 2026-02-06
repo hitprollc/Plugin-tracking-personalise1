@@ -177,4 +177,25 @@ class PTP_Helper {
             'returned'         => __( 'Retourné', 'plugin-tracking-personalise' ),
         ];
     }
+
+    /**
+     * Get badge color for status.
+     *
+     * @param string $status
+     * @return string
+     */
+    public static function get_status_color( string $status ): string {
+        $colors = [
+            'label_created'    => '#6c757d', // Gray
+            'picked_up'        => '#0d6efd', // Blue
+            'in_transit'       => '#0dcaf0', // Cyan
+            'out_for_delivery' => '#fd7e14', // Orange
+            'delivered'        => '#28a745', // Green
+            'exception'        => '#dc3545', // Red
+            'returned'         => '#6f42c1', // Purple
+            'other'            => '#6c757d', // Gray
+        ];
+        
+        return $colors[ $status ] ?? '#6c757d';
+    }
 }

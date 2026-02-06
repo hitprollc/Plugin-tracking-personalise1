@@ -17,8 +17,8 @@ class PTP_Admin {
      */
     public function add_menu(): void {
         add_menu_page(
-            __( 'Tracking', 'plugin-tracking-personalise' ),
-            __( 'Tracking', 'plugin-tracking-personalise' ),
+            __( 'Plugin Tracking Personalise', 'plugin-tracking-personalise' ),
+            __( 'Plugin Tracking Personalise', 'plugin-tracking-personalise' ),
             'manage_options',
             'ptp-shipments',
             [ $this, 'render_shipments_page' ],
@@ -28,7 +28,7 @@ class PTP_Admin {
 
         add_submenu_page(
             'ptp-shipments',
-            __( 'Tous les envois', 'plugin-tracking-personalise' ),
+            __( 'Envois', 'plugin-tracking-personalise' ),
             __( 'Tous les envois', 'plugin-tracking-personalise' ),
             'manage_options',
             'ptp-shipments'
@@ -37,7 +37,7 @@ class PTP_Admin {
         add_submenu_page(
             'ptp-shipments',
             __( 'Ajouter un envoi', 'plugin-tracking-personalise' ),
-            __( 'Ajouter un envoi', 'plugin-tracking-personalise' ),
+            __( 'Ajouter', 'plugin-tracking-personalise' ),
             'manage_options',
             'post-new.php?post_type=ptp_shipment'
         );
@@ -56,6 +56,14 @@ class PTP_Admin {
      * Render shipments list page.
      */
     public function render_shipments_page(): void {
+        // Load required WordPress files
+        if ( ! class_exists( 'WP_List_Table' ) ) {
+            require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+        }
+        if ( ! class_exists( 'WP_Posts_List_Table' ) ) {
+            require_once ABSPATH . 'wp-admin/includes/class-wp-posts-list-table.php';
+        }
+        
         ?>
         <div class="wrap">
             <h1 class="wp-heading-inline"><?php esc_html_e( 'Envois', 'plugin-tracking-personalise' ); ?></h1>
