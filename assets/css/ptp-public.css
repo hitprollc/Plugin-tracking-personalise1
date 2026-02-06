@@ -1,0 +1,355 @@
+/* Public Styles for Plugin Tracking Personalise */
+
+/* Tracking Lookup Form */
+.ptp-tracking-lookup {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 30px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ptp-lookup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.ptp-form-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.ptp-form-field label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.ptp-form-field input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.ptp-form-field input:focus {
+    outline: none;
+    border-color: #0073aa;
+    box-shadow: 0 0 0 1px #0073aa;
+}
+
+.ptp-submit-btn {
+    padding: 12px 24px;
+    background: #0073aa;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.ptp-submit-btn:hover {
+    background: #005a87;
+}
+
+/* Error Messages */
+.ptp-error {
+    padding: 15px;
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    margin: 20px 0;
+}
+
+/* Tracking Result */
+.ptp-tracking-result {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ptp-result-header {
+    margin-bottom: 30px;
+}
+
+.ptp-result-header h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.ptp-tracking-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 4px;
+}
+
+.ptp-info-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.ptp-info-item strong {
+    color: #666;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.ptp-info-item span {
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Status Section */
+.ptp-status-section {
+    margin: 30px 0;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 4px;
+}
+
+.ptp-current-status {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.ptp-current-status h3 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.ptp-current-status.ptp-status-pending h3 {
+    color: #f0ad4e;
+}
+
+.ptp-current-status.ptp-status-in-transit h3 {
+    color: #5bc0de;
+}
+
+.ptp-current-status.ptp-status-out-for-delivery h3 {
+    color: #337ab7;
+}
+
+.ptp-current-status.ptp-status-delivered h3 {
+    color: #5cb85c;
+}
+
+.ptp-current-status.ptp-status-exception h3 {
+    color: #d9534f;
+}
+
+.ptp-current-status.ptp-status-returned h3 {
+    color: #777;
+}
+
+/* Progress Bar */
+.ptp-progress-bar {
+    width: 100%;
+    height: 30px;
+    background: #e0e0e0;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+}
+
+.ptp-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #5cb85c, #4cae4c);
+    transition: width 1s ease;
+    border-radius: 15px;
+}
+
+.ptp-progress-label {
+    text-align: center;
+    margin-top: 10px;
+    font-weight: 600;
+    color: #555;
+}
+
+/* Timeline */
+.ptp-timeline {
+    margin-top: 40px;
+}
+
+.ptp-timeline h3 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.ptp-timeline-events {
+    position: relative;
+    padding-left: 40px;
+}
+
+.ptp-timeline-events::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #ddd;
+}
+
+.ptp-timeline-event {
+    position: relative;
+    margin-bottom: 30px;
+    padding-left: 20px;
+}
+
+.ptp-timeline-dot {
+    position: absolute;
+    left: -29px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #5cb85c;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 2px #ddd;
+}
+
+.ptp-timeline-event.ptp-status-pending .ptp-timeline-dot {
+    background: #f0ad4e;
+}
+
+.ptp-timeline-event.ptp-status-in-transit .ptp-timeline-dot {
+    background: #5bc0de;
+}
+
+.ptp-timeline-event.ptp-status-out-for-delivery .ptp-timeline-dot {
+    background: #337ab7;
+}
+
+.ptp-timeline-event.ptp-status-delivered .ptp-timeline-dot {
+    background: #5cb85c;
+}
+
+.ptp-timeline-event.ptp-status-exception .ptp-timeline-dot {
+    background: #d9534f;
+}
+
+.ptp-timeline-event.ptp-status-returned .ptp-timeline-dot {
+    background: #777;
+}
+
+.ptp-timeline-content {
+    background: #fff;
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.ptp-event-date {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.ptp-event-status {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.ptp-event-location {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.ptp-event-location::before {
+    content: '📍 ';
+}
+
+.ptp-event-description {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* WooCommerce Integration */
+.woocommerce-order-tracking {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 4px;
+}
+
+.woocommerce-table--order-tracking {
+    width: 100%;
+}
+
+.woocommerce-table--order-tracking th {
+    font-weight: 600;
+    padding: 10px;
+}
+
+.woocommerce-table--order-tracking td {
+    padding: 10px;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .ptp-tracking-lookup,
+    .ptp-tracking-result {
+        padding: 20px;
+        margin: 10px;
+    }
+
+    .ptp-tracking-info {
+        grid-template-columns: 1fr;
+    }
+
+    .ptp-timeline-events {
+        padding-left: 30px;
+    }
+
+    .ptp-timeline-dot {
+        left: -24px;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.ptp-tracking-result {
+    animation: fadeIn 0.5s ease;
+}
+
+.ptp-timeline-event {
+    animation: fadeIn 0.5s ease;
+    animation-fill-mode: both;
+}
+
+.ptp-timeline-event:nth-child(1) { animation-delay: 0.1s; }
+.ptp-timeline-event:nth-child(2) { animation-delay: 0.2s; }
+.ptp-timeline-event:nth-child(3) { animation-delay: 0.3s; }
+.ptp-timeline-event:nth-child(4) { animation-delay: 0.4s; }
+.ptp-timeline-event:nth-child(5) { animation-delay: 0.5s; }
