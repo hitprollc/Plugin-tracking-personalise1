@@ -26,6 +26,7 @@ define( 'PTP_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
 // Autoload includes
 $ptp_includes = [
+    'includes/class-ptp-compatibility.php',
     'includes/class-ptp-helper.php',
     'includes/class-ptp-database.php',
     'includes/class-ptp-activator.php',
