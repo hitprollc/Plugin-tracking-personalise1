@@ -3,9 +3,9 @@
  * Plugin Name: Plugin Tracking Personalise
  * Plugin URI:  https://example.com/plugin-tracking-personalise
  * Description: Système de suivi d'expédition (tracking colis) personnalisé, similaire à UPS/USPS. Compatible WooCommerce.
- * Version:     1.0.0
+ * Version:     1.0.1
  * Author:      HitPro LLC
- * Author URI:  https://example.com
+ * Author URI:  https://hitprollc.com
  * License:     GPL-2.0+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: plugin-tracking-personalise
